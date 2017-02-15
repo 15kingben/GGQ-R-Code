@@ -1,10 +1,4 @@
-
-# works with 10,000 sample generated from  "test...fuulltraj6"
-
-summary(new.dat2$A1c.past[new.dat2$step.past==2&new.dat2$A==0])
-
-
-#new.dat2[new.dat2$ran==1&new.dat2$A==0,][1:100,]
+# A Sample Feature
 
 genBasVec<-function(r,st,a,w,d,as,res,action){
 	
