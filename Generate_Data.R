@@ -1,40 +1,19 @@
-#sdfsf
-
 
 expit<-function(x){
 	exp(x)/(1+exp(x))
 	}
 
-#when D==1, r==1 or the bach of treatment is excusted the treatment reports None for them. Full Tranjectories
-
-
-#rm(list=ls())
-
-#N<-2000
-
 
 sig<-1.0
-#sig<-.007
 sigep<-rep(.5,N)
-#sigep<-rep(.005,N)
-##set.seed(300)
-#set.seed(3)
 
 
-##set.seed(11)
 
-#source("/Users/Ashkan/Dropbox/Susan/Sandeep/MyCode-Parm.R") # reads the parameter values
-source("~/hhome/MyCode-Parm.R") # reads the parameter values
-#source("~/MyCode-Parm2.R")
+source("~/MyCode-Parm.R") # reads the parameter values
 goal=7
 
 bl.treatment<-sample(c(0,2,3,6),N,replace=TRUE) #1=None 2=Sulf 3=Ins 4=Sulf+Ins
 bl.treatment<-sample(c(0),N,replace=TRUE) #1=None 2=Sulf 3=Ins 4=Sulf+Ins
-
-#bl.treatment<-sample(c(1,2,3,4),N,TRUE) #1=None 2=Sulf 3=Ins 4=Sulf+Ins
-
-#bl.treatment[bl.treatment==1]<-0
-#bl.treatment[bl.treatment==4]<-6
 
 
 ID<-1:N
@@ -66,7 +45,6 @@ bl.a1c[bl.treatment==6]<-bl.a1c.SulfIns
         
         
 a1c.order=cbind(none=c(1:4,7),sulf.only=c(6,1,3,4,7),ins.only=c(1,3,5,7,7),sulf.ins=c(1,3,5,7,7))
-#a1c.order=cbind(none=c(1:4,4),sulf.only=c(6,1,3,4,4),ins.only=c(1,3,5,5,5),sulf.ins=c(1,3,5,5,5))
 a1c.numtx=cbind(none=c(1,1,1,1,0),sulf.only=c(1,1,1,1,0),ins.only=c(1,1,1,0,0),sulf.ins=c(1,1,1,0,0))
 
 
@@ -75,8 +53,6 @@ a1c.numtx=cbind(none=c(1,1,1,1,0),sulf.only=c(1,1,1,1,0),ins.only=c(1,1,1,0,0),s
 nh3<-data.frame(ID,bl.treatment,bl.a1c)
 
 S=17
-#S=16 # TZD causes non-regularity
-##S=1
 v=v.values[S]
 d=d.values[S]
 a=a.values[S]
@@ -96,8 +72,7 @@ A=du.conv.oral[u];  B=du.conv.ins[u];  C=du.safe[u]; D=du.sulf.hypo[u]; E=du.sul
 
 	##### mu matrix ####################
 	tr.effect<-c(.15,.20,0.02,.14,.07,.10,.0)
-#	tr.effect<-c(.04,.07,.03,.1,.03,.03,.0) #met,sulf,tzd,ins
-#	tr.effect<-c(.14,.17,.13,.1,.13,.13,.0)
+
 	mu<-matrix(0,ncol=4,nrow=6)
 	mu[1,]<-c(9,9.2,9.4,9.7)
 	for (i in 2:5){
@@ -115,15 +90,13 @@ A=du.conv.oral[u];  B=du.conv.ins[u];  C=du.safe[u]; D=du.sulf.hypo[u]; E=du.sul
 			
 	
 	###########DuDc should be added here
-#	source("/Users/Ashkan/Dropbox/Susan/Sandeep/MyCode-dudc.R")
-	source("~/hhome/MyCode-dudc.R")
+	source("~/MyCode-dudc.R")
     ##################################### 
 	
 		
 	reachgoal0=ifelse(bl.a1c<=goal,1,0);
 	nh3$goalat=ifelse(reachgoal0==1,0,99)
-#	tx.bl=rx_sulf+rx_insulin+rx_insulin  		#assuming two types of insulin used;
-#	nh3.0$numtx=tx.bl
+
 	nh3$post.a1c=bl.a1c
     nh3$visit.muP<-rep(9.7,N)
 	nh3$visit.muP[bl.treatment==0]<-9
@@ -139,11 +112,7 @@ A=du.conv.oral[u];  B=du.conv.ins[u];  C=du.safe[u]; D=du.sulf.hypo[u]; E=du.sul
 		head(nh3[,-c(4:15)])
 		
 		mean.pctreduc<-c(.15,.20,0.02,.14,.07,.10,.0)
-#		mean.pctreduc<-c(.04,.07,.01,.05,.03,.03,.0)
-#		mean.pctreduc<-c(.04,.07,.03,.1,.03,.03,.0)
-#		mean.pctreduc<-c(.14,.17,.13,.1,.13,.13,.0)
-#		mean.pctreduc2<-c(0,.04,.07,.03,.1,.03,.03,.0)
-#		mean.pctreduc2<-c(0,.14,.17,.13,.1,.13,.13,.0)
+
 		max.step<-c(4,4,3,3)[a1c.type]
 		
 	#----------------------------------------------------------------------;
@@ -152,9 +121,6 @@ mu.visit<-pctreduc.m<-dc.m<-r<-visit.postF<-step.m<-visit.tx<-asstx<-pctreduc.m2
 step=rep(0,N)
 visit=1
 for( visit in 1:nvisits) {
-#while( visit<41) {
-	
-#	age.m[,visit]<-round(bl.age+rnorm(N,0,0.5),2)
 
 if(visit==1){ age.m[,visit]<-round( (bl.age+rnorm(N,0,.5))/sqrt(1+.5^2),2)} else{age.m[,visit]<-round((age.m[,visit-1]+rnorm(N,0.0,.5))/sqrt(1+.5^2),2)}
 
@@ -166,14 +132,6 @@ if(visit==1){ weight.m[,visit]<-round((bl.weight+rnorm(N,0,.5))/sqrt(1+.5^2),2)}
 post.a1c<- visit.post<-visit.muA<-reachgoal<-num.intens<-du<-goalat<-rep(0,N);
 
 
-#	if(visit==1){temp<-as.vector(nh3$num.intens+1+nh3$dc<6); visit.pctreduc[temp]<-mean.pctreduc[diag(a1c.order[nh3$num.intens[temp]+1+nh3$dc[temp],a1c.type[temp]])]} else{temp<-as.vector(nh3$num.intens+1+nh3$dc+r[,visit-1]<6); visit.pctreduc[temp]<-mean.pctreduc[diag(a1c.order[nh3$num.intens[temp]+1+nh3$dc[temp]+r[temp,visit-1],a1c.type[temp]])]}
-
-
-#check if this is correct:
-#	if(visit==1){temp<-as.vector(nh3$num.intens+1+nh3$dc<6); visit.pctreduc[temp]<-mean.pctreduc[diag(a1c.order[nh3$num.intens[temp]+1+nh3$dc[temp],a1c.type[temp]])]} else{temp<-as.vector(nh3$num.intens+1+nh3$dc+r[,visit-1]<6); visit.pctreduc[temp]<-mean.pctreduc[diag(a1c.order[step+1,a1c.type[temp]])]}
-
-#pctreduc.m2[,visit]<-visit.pctreduc
-
 temp<-NULL
 for (i in 1:N){	
 
@@ -181,35 +139,25 @@ for (i in 1:N){
 
 
 
-#dc.m[,visit]<-dc.vector<-diag(dc.matrix[,a1c.order[nh3$num.intens+1+nh3$dc,a1c.type]])
 dc.m[i,visit]<-dc.vector[i]<-dc.matrix[i,a1c.order[step[i]+1,a1c.type[i]]]
 mu.visit[i,visit]<-visit.muP[i]<- mu[nh3$num.intens[i]+1,a1c.type[i]] # mu in the previous visit
 a1c.numtxt[i]<-(a1c.numtx[nh3$num.intens[i]+1,a1c.type[i]])
-#a1c.orderi<-diag(a1c.order[nh3$num.intens+1+nh3$dc,a1c.type])
 asstx[i,visit]<-a1c.orderi[i]<-(a1c.order[step[i]+1,a1c.type[i]])
 }
-
-
-#if(visit>1){asstx[nh3$post.a1c<7,visit]<-7}
 
 pctreduc.m[,visit]<-visit.pctreduc
 temp<-NULL
 
 
-		#dc.vector<-rep(0,N)  
 		indic.dc<-rep(0,N)
 	if(visit>1){	indic.dc<-(visit.tx[,visit-1]==4 | visit.tx[,visit-1]==5); dc.vector[indic.dc]=0}
 		
 		
-#			nh3$dc<-dc.vector
 
 		
-	######### nh3.0$post.a1c>8
 	elge<-nh3$post.a1c>8
 	
-	
-#	if(visit>1){step[elge]<-step[elge]+1*(1-indic.dc[elge])*(visit.tx[elge,visit-1]!=asstxt)*(dc.vector[elge]!=1)+(dc.vector[elge]!=1)} else{step[elge]<-step[elge]+1*(1-indic.dc[elge])}
-if(visit==1){visit.muP[elge]<-ifelse(dc.m[elge,1]!=1,mu.visit[elge,visit]*(1-visit.pctreduc[elge]),nh3$visit.muP[elge])} else{treat.eff<-visit.pctreduc[elge]; visit.muP[elge]<-ifelse((dc.m[elge,visit]!=1)*(asstx[elge,visit]!=asstx[elge,visit-1])*(asstx[elge,visit-1]!=7), nh3$visit.muP[elge]*(1-treat.eff),nh3$visit.muP[elge])}
+	if(visit==1){visit.muP[elge]<-ifelse(dc.m[elge,1]!=1,mu.visit[elge,visit]*(1-visit.pctreduc[elge]),nh3$visit.muP[elge])} else{treat.eff<-visit.pctreduc[elge]; visit.muP[elge]<-ifelse((dc.m[elge,visit]!=1)*(asstx[elge,visit]!=asstx[elge,visit-1])*(asstx[elge,visit-1]!=7), nh3$visit.muP[elge]*(1-treat.eff),nh3$visit.muP[elge])}
 
 
 	
@@ -255,9 +203,6 @@ if(visit==1){r[elge,visit]<-rbinom(N,1,expit(1-.2*bl.a1c))[elge]} else{r[elge,vi
 
 	r[elge & nh3$post.a1c<7 ,visit]<-0
 
-
-#     if(visit==1){indic=rep(1,sum(elge))}  else{ indic<-visit.tx[elge,visit-1]!=5 & visit.tx[elge,visit-1]!=4& visit.tx[elge,visit-1]!=7}
-
      if(visit==1){indic=rep(1,length(nh3$post.a1c))}  else{ indic<-asstx[,visit-1]!=5 & asstx[,visit-1]!=4& asstx[,visit-1]!=7}
 
     r[elge==TRUE & indic==0 ,visit]<-0
@@ -275,16 +220,6 @@ if(visit==1){visit.muP[elge]<-ifelse(r1!=1&dc.m[elge,1]!=1,mu.visit[elge,visit]*
 
 
 
-
-
-	
-	#dc.vector11[r1==1]<-0  #r=1: stay on the same drug
-		
-		
-#		step[elge]<-step[elge]+(1-r[elge,visit])*(1-indic.dc[elge])*(nh3$post.a1c[elge]>7)
-
-
-
         visit.muA[elge]<-ifelse(r1!=1&dc.vector[elge]!=1, visit.mu[elge] , visit.muP[elge]);
 		
 		true.a1c=((nh3$post.a1c[elge]-	nh3$visit.muP[elge]+sig*rnorm(sum(elge),0,sigep[elge]))/sqrt(1+sigep[elge]^2)+ nh3$visit.muP[elge]*(1-visit.pctreduc[elge]))*(1-r1)+ ((nh3$post.a1c[elge]-nh3$visit.muP[elge]+sig*rnorm(sum(elge),0,sigep[elge]))/sqrt(1+sigep[elge]^2)+nh3$visit.muP[elge])*r1
@@ -299,13 +234,7 @@ if(visit==1){visit.muP[elge]<-ifelse(r1!=1&dc.m[elge,1]!=1,mu.visit[elge,visit]*
      if(visit==1){indic=rep(1,sum(elge))}  else{ indic<-visit.tx[elge,visit-1]!=5 & visit.tx[elge,visit-1]!=4& visit.tx[elge,visit-1]!=7}
 
 		post.a1c[elge]=ifelse(nh3$post.a1c[elge]>goal&dc.vector11!=1&r1!=1&indic==1,a1c.vec[,1],temp); 
-    	visit.post[elge]=ifelse(nh3$post.a1c[elge]>goal&dc.vector11!=1&r1!=1& indic==1, a1c.vec[,1],temp);
-
-   
-	
-        # if dis==1 at t, we want to keep A1c_{t}=A1c_{t+1} instead of  A1c_{t+1}=NA
-	#nh3.1$visit1.post[elge]=ifelse(nh3.0$goalat[elge]>0,a1c.vec1[,1],NA);
-	
+    	visit.post[elge]=ifelse(nh3$post.a1c[elge]>goal&dc.vector11!=1&r1!=1& indic==1, a1c.vec[,1],temp);	
 	
 	reachgoal=ifelse(post.a1c[elge]<=goal&nh3$goalat[elge]>(visit-1),1,0);
 	goalat[elge]=ifelse(reachgoal==1,visit,nh3$goalat[elge])		
@@ -333,9 +262,7 @@ if(visit==1) {
 		step<-step+1*(visit.tx[,visit]!=visit.tx[,visit-1])*(visit.tx[,visit]!=7)+(dc.vector==1)*as.numeric(step<(max.step+1))*(visit.tx[,visit]==visit.tx[,visit-1])*(1-grched)
 
 	}
-		
-#print(nh3$visit.muP[40])
-	
+			
 	step.m[,visit]<-step
 	visit.postF[,visit]<-visit.post
 	dc.m[,visit]<-dc.vector
@@ -348,16 +275,9 @@ if(visit==1) {
     nh3$dc<-dc.vector
     nh3$du<-du
     nh3$num.intens<-num.intens
-#    visit=visit+1
 #    print(cbind(visit,step))
 }  # visit loop
 
-#head(nh3[,-c(4:15)])
-#(nh3[1:100,-c(4:15)])
-#head(visit.tx)
-#head(visit.postF)
-
-#cbind(bl.treatment[1:30],visit.tx[1:30,])
 
 #visit.postF[1:100,]
 visit.tx[49,]
@@ -505,35 +425,6 @@ new.dat2$A.past<-c(0, new.dat2$A[-length(new.dat.nao$Astar)])
 new.dat2$A[new.dat2$A==7]<-0
 new.dat2$Astar[new.dat2$Astar==7]<-0
 
-#new.dat.nao[new.dat.nao$A.past==0&new.dat.nao$A==1,]
-
-
-#new.dat2[new.dat2$ID==500,]
-#new.dat.01[new.dat.01$ID==500,]
-
-#new.dat2[1:300,-c(3:7)]
-#new.dat2[1:100,]
-#new.dat.nao[1:400,-c(3:7)]
-
-
-
-
-
-
-
-
-
-#new.dat.nao[new.dat.nao$A==2&new.dat.nao$Astar==0,]
-#new.dat.nao[new.dat.nao$A==2&new.dat.nao$D==1,]
-
-
-#save(list=ls(),file="DiabSimN105-TranjShorttenS1.RData")
-
-
-#new.dat.nao[new.dat.nao$A==3,][1:100,]
-#new.dat.01[new.dat.01$A==3,][1:100,]
-
-#new.dat.nao[1:5000,]
 
 tn<-sum((new.dat.nao$A==0)*(new.dat.nao$A1c.past>7))
 sum((new.dat.nao$A==0)*(new.dat.nao$A1c.past>7)*(new.dat.nao$A1c<7))/tn
