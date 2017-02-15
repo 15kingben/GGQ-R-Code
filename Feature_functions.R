@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 # A Sample Feature
+=======
+
+# A sample feature"
+
+>>>>>>> Stashed changes
 
 genBasVec<-function(r,st,a,w,d,as,res,action){
 	
