@@ -1,7 +1,5 @@
 
 
-#This works with A1cGGQ-Cat8. Results are similar to the Bellman
-# This is faster than the previous versions
 b1<-7.01
 b2<-7.98
 
@@ -11,26 +9,10 @@ q2<-7
 q3<-8 
 q4<-9
 
-#q1<-b[3]
-#q2<-b[7]
-#q3<-b[8]
-#q4<-b[9]
-#q5<-b[10]
-#q6<-b[11]
-#q7<-b[12]
 
 qa1<-b.a[2]
 qa2<-b.a[3]
 qa3<-b.a[4]
-
-#qa1<-b.a[2]
-#qa2<-b.a[4]
-#qa3<-b.a[6]
-
-
-#qw1<-b.w[2]
-#qw2<-b.w[4]
-#qw3<-b.w[6]
 
 
 qw1<-b.w[2]
